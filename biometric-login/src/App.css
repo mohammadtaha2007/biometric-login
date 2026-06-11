@@ -3,3 +3,11 @@ body {
   font-family: sans-serif;
   background: #0f172a;
 }
+
+.container {
+  align-items: center;
+  height: 100vh;
+  justify-content: center;
+  display: flex;
+}
+
