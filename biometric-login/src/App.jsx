@@ -41,4 +41,23 @@ export default function App() {
     );
   }
 
+
+
+  return (
+    <div className="container">
+      <div className="card">
+        <h2>Login</h2>
+
+        <form onSubmit={loginHandler}>
+          <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+
+          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+
+          <button type="submit">Login</button>
+
+          {error && <p className="error">{error}</p>}
+        </form>
+      </div>
+    </div>
+  );
 }
