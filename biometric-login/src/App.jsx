@@ -20,4 +20,10 @@ export default function App() {
       setError("UserName Of Password Is Not Fetch:(");
     }
   };
+
+  const logout = () => {
+    setIsLoggedIn(false);
+    setUsername("");
+    setPassword("");
+  };
 }
