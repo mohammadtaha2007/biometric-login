@@ -11,3 +11,11 @@ body {
   display: flex;
 }
 
+.card {
+  background: #1e293b;
+  padding: 30px;
+  color: white;
+  text-align: center;
+  width: 280px;
+  border-radius: 12px;
+}
