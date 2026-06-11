@@ -26,4 +26,19 @@ export default function App() {
     setUsername("");
     setPassword("");
   };
+
+
+
+  if (isLoggedIn) {
+    return (
+      <div className="container">
+        <div className="card">
+          <h1>Login Compeleted</h1>
+          <p>`Welcome ${username}`</p>
+          <button onClick={logout}>logout</button>
+        </div>
+      </div>
+    );
+  }
+
 }
