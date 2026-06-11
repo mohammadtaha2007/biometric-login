@@ -29,3 +29,19 @@ input {
   outline: none;
   border: none;
 }
+
+
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #2563eb;
+}
