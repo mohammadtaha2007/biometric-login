@@ -34,7 +34,7 @@ export default function App() {
       <div className="container">
         <div className="card">
           <h1>Login Compeleted</h1>
-          <p>`Welcome ${username}`</p>
+          <p>Welcome {username}</p>
           <button onClick={logout}>logout</button>
         </div>
       </div>
