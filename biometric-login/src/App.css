@@ -45,3 +45,8 @@ button {
 button:hover {
   background: #2563eb;
 }
+
+.error {
+  color: #ef4444;
+  margin-top: 10px;
+}
