@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: sans-serif;
-  background: #0f172a;
+  background: linear-gradient(rgb(205, 227, 251),#467eff,rgb(13, 1, 42) );
 }
 
 .container {
@@ -12,9 +12,9 @@ body {
 }
 
 .card {
-  background: #1e293b;
+  background: #ffffff13;
   padding: 30px;
-  color: white;
+  color: rgb(0, 0, 0);
   text-align: center;
   width: 280px;
   border-radius: 12px;
@@ -22,12 +22,14 @@ body {
 
 
 input {
-  width: 100%;
+  background: #404040;
+  width: 80%;
   border-radius: 8px;
   padding: 10px;
   margin: 8px 0;
   outline: none;
   border: none;
+  color: white;
 }
 
 
@@ -35,18 +37,23 @@ button {
   width: 100%;
   padding: 10px;
   margin-top: 10px;
-  background: #3b82f6;
+  background: #000000;
   color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  transition: all .5s;
 }
 
 button:hover {
-  background: #2563eb;
+  background: #003ab7;
 }
 
 .error {
-  color: #ef4444;
+  color: #ffffff;
+  background-color: red;
+  font-size: small;
+  padding: 1px;
   margin-top: 10px;
+    border-radius: 8px;
 }
