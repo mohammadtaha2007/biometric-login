@@ -7,6 +7,7 @@ export default defineConfig({
     react(),
     basicSsl(),
   ],
+  base: "/biometric-login/",
 
   server: {
     host: "0.0.0.0",
