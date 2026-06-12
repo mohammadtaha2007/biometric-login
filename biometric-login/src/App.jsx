@@ -1,181 +1,254 @@
 import { useState } from "react";
 import "./App.css";
 
-import {
-  startRegistration,
-  startAuthentication,
-} from "@simplewebauthn/browser";
-
 export default function App() {
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [error, setError] = useState("");
-  const [biometricEnabled, setBiometricEnabled] = useState(
-    localStorage.getItem("biometric") === "true"
-  );
+
+  const [biometricEnabled, setBiometricEnabled] =
+    useState(
+      localStorage.getItem("biometric") === "true"
+    );
 
   const USER = "admin";
   const PASSWORD = "1234";
 
   // LOGIN
   const loginHandler = (e) => {
+
     e.preventDefault();
 
-    if (username === USER && password === PASSWORD) {
+    if (
+      username === USER &&
+      password === PASSWORD
+    ) {
+
       setIsLoggedIn(true);
+
       setError("");
+
     } else {
-      setError("UserName Or Password Is Not Correct :(");
+
+      setError(
+        "UserName Or Password Is Not Correct :("
+      );
     }
   };
 
   // LOGOUT
   const logout = () => {
+
     setIsLoggedIn(false);
+
     setUsername("");
+
     setPassword("");
   };
 
   // ENABLE BIOMETRIC
   const enableBiometric = async () => {
-  try {
-    const publicKey = {
-      challenge: Uint8Array.from(
-        "randomChallenge123",
-        (c) => c.charCodeAt(0)
-      ),
 
-      rp: {
-        name: "Biometric Login App",
-      },
+    try {
 
-      user: {
-        id: Uint8Array.from(
-          "user123",
-          (c) => c.charCodeAt(0)
+      const publicKey = {
+
+        challenge: crypto.getRandomValues(
+          new Uint8Array(32)
         ),
-        name: username,
-        displayName: username,
-      },
 
-      pubKeyCredParams: [
-        {
-          type: "public-key",
-          alg: -7,
+        rp: {
+          name: "Biometric Login App",
         },
-      ],
 
-      authenticatorSelection: {
-        authenticatorAttachment: "platform",
-        userVerification: "required",
-      },
+        user: {
 
-      timeout: 60000,
+          id: crypto.getRandomValues(
+            new Uint8Array(16)
+          ),
 
-      attestation: "none",
-    };
+          name: username,
 
-    const credential =
-      await navigator.credentials.create({
-        publicKey,
-      });
+          displayName: username,
+        },
 
-    console.log(credential);
+        pubKeyCredParams: [
+          {
+            type: "public-key",
+            alg: -7,
+          },
+        ],
 
-    localStorage.setItem("biometric", "true");
+        authenticatorSelection: {
 
-    setBiometricEnabled(true);
+          authenticatorAttachment: "platform",
 
-    alert("Biometric Enabled ✅");
-  } catch (err) {
-    console.log(err);
+          userVerification: "required",
+        },
 
-    alert(err.message);
-  }
-};
+        timeout: 60000,
+
+        attestation: "none",
+      };
+
+      const credential =
+        await navigator.credentials.create({
+          publicKey,
+        });
+
+      console.log("Credential:", credential);
+
+      // SAVE BIOMETRIC STATUS
+      localStorage.setItem(
+        "biometric",
+        "true"
+      );
+
+      // SAVE CREDENTIAL ID
+      localStorage.setItem(
+        "credentialId",
+        credential.id
+      );
+
+      setBiometricEnabled(true);
+
+      alert("Biometric Enabled ✅");
+
+    } catch (err) {
+
+      console.log(err);
+
+      alert(err.message);
+    }
+  };
 
   // LOGIN WITH BIOMETRIC
   const biometricLogin = async () => {
-  try {
-    const publicKey = {
-      challenge: Uint8Array.from(
-        "loginChallenge123",
-        (c) => c.charCodeAt(0)
-      ),
 
-      userVerification: "required",
+    try {
 
-      timeout: 60000,
-    };
+      const credentialId =
+        localStorage.getItem("credentialId");
 
-    const assertion =
-      await navigator.credentials.get({
-        publicKey,
-      });
+      if (!credentialId) {
 
-    console.log(assertion);
+        alert(
+          "No Biometric Credential Found"
+        );
 
-    setIsLoggedIn(true);
+        return;
+      }
 
-    alert("Login Success ✅");
-  } catch (err) {
-    console.log(err);
+      const publicKey = {
 
-    alert(err.message);
-  }
-};
+        challenge: crypto.getRandomValues(
+          new Uint8Array(32)
+        ),
+
+        userVerification: "required",
+
+        timeout: 60000,
+      };
+
+      const assertion =
+        await navigator.credentials.get({
+          publicKey,
+        });
+
+      console.log("Assertion:", assertion);
+
+      setIsLoggedIn(true);
+
+      alert("Login Success ✅");
+
+    } catch (err) {
+
+      console.log(err);
+
+      alert(err.message);
+    }
+  };
 
   // DASHBOARD
   if (isLoggedIn) {
+
     return (
+
       <div className="container">
+
         <div className="card">
+
+          <h1>Dashboard</h1>
 
           <p>Welcome {username}</p>
 
           {!biometricEnabled && (
-            <button onClick={enableBiometric}>
+
+            <button
+              onClick={enableBiometric}
+            >
               Enable Biometric
             </button>
           )}
 
           {biometricEnabled && (
-            <button onClick={biometricLogin}>
+
+            <button
+              onClick={biometricLogin}
+            >
               Login With Fingerprint
             </button>
           )}
 
-          <button onClick={logout}>Logout</button>
+          <button onClick={logout}>
+            Logout
+          </button>
+
         </div>
+
       </div>
     );
   }
 
   // LOGIN PAGE
   return (
+
     <div className="container">
+
       <div className="card">
+
         <h2>Login</h2>
 
         <form onSubmit={loginHandler}>
+
           <input
             type="text"
             placeholder="Username"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) =>
+              setUsername(e.target.value)
+            }
           />
 
           <input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
           />
 
-          <button type="submit">Login</button>
+          <button type="submit">
+            Login
+          </button>
 
           {biometricEnabled && (
+
             <button
               type="button"
               onClick={biometricLogin}
@@ -184,9 +257,16 @@ export default function App() {
             </button>
           )}
 
-          {error && <p className="error">{error}</p>}
+          {error && (
+            <p className="error">
+              {error}
+            </p>
+          )}
+
         </form>
+
       </div>
+
     </div>
   );
 }
